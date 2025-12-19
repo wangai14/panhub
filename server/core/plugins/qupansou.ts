@@ -21,7 +21,7 @@ function determineLinkType(url: string): string {
   if (u.includes("pan.quark.cn")) return "quark";
   if (u.includes("cloud.189.cn")) return "tianyi";
   if (u.includes("pan.xunlei.com")) return "xunlei";
-  if (u.includes("caiyun.139.com")) return "mobile";
+  if (u.includes("caiyun.139.com") || u.includes("yun.139.com")) return "mobile";
   if (u.includes("115.com")) return "115";
   if (u.includes("drive.uc.cn")) return "uc";
   if (u.includes("123pan.com") || u.includes("pan.123.com")) return "123";
