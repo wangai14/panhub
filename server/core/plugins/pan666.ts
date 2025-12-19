@@ -30,7 +30,7 @@ function mapType(url: string): string {
   if (u.includes("pan.quark.cn")) return "quark";
   if (u.includes("cloud.189.cn")) return "tianyi";
   if (u.includes("pan.xunlei.com")) return "xunlei";
-  if (u.includes("caiyun")) return "mobile";
+  if (u.includes("caiyun") || u.includes("yun.139.com")) return "mobile";
   if (u.includes("115.com")) return "115";
   if (u.includes("123pan.com")) return "123";
   if (u.includes("drive.uc.cn")) return "uc";

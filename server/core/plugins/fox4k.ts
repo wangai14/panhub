@@ -19,7 +19,7 @@ const re = {
       /https?:\/\/(?:www\.)?(?:aliyundrive\.com|alipan\.com)\/s\/[0-9a-zA-Z_-]+/g,
     tianyi: /https?:\/\/cloud\.189\.cn\/t\/[0-9a-zA-Z_-]+/g,
     uc: /https?:\/\/drive\.uc\.cn\/s\/[0-9a-fA-F]+(?:\?[^"\s]*)?/g,
-    mobile: /https?:\/\/caiyun\.139\.com\/[^"\s]+/g,
+    mobile: /https?:\/\/(?:caiyun\.139|yun\.139)\.com\/[^"\s]+/g,
     oneonefive: /https?:\/\/115\.com\/s\/[0-9a-zA-Z_-]+/g,
     pikpak: /https?:\/\/mypikpak\.com\/s\/[0-9a-zA-Z_-]+/g,
     xunlei:

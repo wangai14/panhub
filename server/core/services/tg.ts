@@ -94,12 +94,13 @@ export async function fetchTgChannelPosts(
     const text = root.find(".tgme_widget_message_text").text().trim();
     const dateTitle = root.find("time").attr("datetime") || "";
     const postId = root.find(".tgme_widget_message").attr("data-post") || "";
-    const title = text.split("\n")[0] || text.slice(0, 80);
-    const content = text;
+
+    // 提取第一行
+    const firstLine = text.split("\n")[0] || text.slice(0, 80);
 
     // 关键词过滤（包含即可）
     if (kw && kw.length > 0) {
-      const hay = (title + " " + content).toLowerCase();
+      const hay = (firstLine + " " + text).toLowerCase();
       if (!hay.includes(kw)) return;
     }
 
@@ -108,7 +109,7 @@ export async function fetchTgChannelPosts(
     const seenUrls = new Set<string>();
     // 更严格的 URL 匹配（仅 RFC3986 允许的字符，避免把中文等拼进去）
     const urlPattern =
-      /https?:\/\/[A-Za-z0-9\-\._~:\/\?\#\[\]@!\$&'\(\)\*\+,;=%]+/g;
+      /https?:\/\/[A-Za-z0-9\-._~:\/?#\[\]@!$&'()*+,;=%]+/g;
     const passwdPattern = /(?:提取码|密码|pwd|pass)[:：\s]*([a-zA-Z0-9]{3,6})/i;
 
     const addUrl = (raw: string) => {
@@ -126,18 +127,49 @@ export async function fetchTgChannelPosts(
       if (seenUrls.has(key)) return;
       seenUrls.add(key);
 
-      const m = content.match(passwdPattern);
+      const m = text.match(passwdPattern);
       const password = m ? m[1] : "";
       links.push({ type, url: deproxied, password });
     };
 
-    const urlsFromText = content.match(urlPattern) || [];
+    const urlsFromText = text.match(urlPattern) || [];
     for (const u of urlsFromText) addUrl(u);
 
     root.find(".tgme_widget_message_text a[href]").each((_, a) => {
       const href = $(a).attr("href");
       if (href) addUrl(href);
     });
+
+    // 生成 title：移除 URL，保留其他文本
+    let title = firstLine;
+    for (const link of links) {
+      const escaped = link.url.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+      title = title.replace(new RegExp(escaped, "g"), "");
+    }
+    // 移除常见的分隔符和平台名称（但保留其他内容）
+    title = title
+      .replace(/(夸克|UC|百度|阿里|迅雷|115|天翼|123|移动|提取码|密码|：|:|，|,|。|\.|、|\||-)+/g, "")
+      .replace(/\s+/g, " ")
+      .trim()
+      .slice(0, 80);
+    // 如果清理后为空，使用原始第一行
+    if (!title) title = firstLine.slice(0, 80);
+
+    // 生成 content：移除 URL 和密码
+    let content = text;
+    for (const link of links) {
+      const escaped = link.url.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+      content = content.replace(new RegExp(escaped, "g"), "");
+      if (link.password) {
+        content = content.replace(new RegExp(`(?:提取码|密码|pwd|pass)[:：\\s]*${link.password}`, "gi"), "");
+      }
+    }
+    // 移除平台名称和多余空格
+    content = content
+      .replace(/(夸克|UC|百度|阿里|迅雷|115|天翼|123|移动|：|:|，|,|。|\.|、|\||-)+/g, "")
+      .replace(/\s+/g, " ")
+      .replace(/\s{2,}/g, " ")
+      .trim();
 
     const sr: SearchResult = {
       message_id: postId,

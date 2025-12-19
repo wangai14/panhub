@@ -42,7 +42,7 @@ function determineType(apiType: string, url: string): string {
     case "115":
       return quick(u.includes("115.com/s/"), "115");
     case "MB":
-      return quick(u.includes("feixin.10086.cn"), "mobile");
+      return quick(u.includes("feixin.10086.cn") || u.includes("yun.139.com") || u.includes("caiyun.139.com"), "mobile");
     case "WY":
       return quick(u.includes("share.weiyun.com"), "weiyun");
     case "LZ":

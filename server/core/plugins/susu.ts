@@ -35,7 +35,7 @@ function determineLinkType(url: string, name = ""): string {
   if (u.includes("cloud.189.cn")) return "tianyi";
   if (u.includes("115.com")) return "115";
   if (u.includes("drive.uc.cn")) return "uc";
-  if (u.includes("caiyun.139.com")) return "mobile";
+  if (u.includes("caiyun.139.com") || u.includes("yun.139.com")) return "mobile";
   if (u.includes("share.weiyun.com")) return "weiyun";
   if (u.includes("lanzou")) return "lanzou";
   if (u.includes("jianguoyun.com")) return "jianguoyun";

@@ -74,7 +74,7 @@ function determineLinkType(url: string): string {
   if (u.includes("pan.xunlei.com/s/")) return "xunlei";
   if (u.includes("cloud.189.cn/t/")) return "tianyi";
   if (u.includes("115.com/s/")) return "115";
-  if (u.includes("feixin.10086.cn")) return "mobile";
+  if (u.includes("feixin.10086.cn") || u.includes("yun.139.com") || u.includes("caiyun.139.com")) return "mobile";
   if (u.includes("share.weiyun.com")) return "weiyun";
   if (u.includes("lanzou") || u.includes("lanzo")) return "lanzou";
   if (u.includes("jianguoyun.com/p/")) return "jianguoyun";
